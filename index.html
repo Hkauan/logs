@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lOGIN INTERrisco</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            background: #000;
+        }
+
+        .matrix div {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0.8;
+            animation: matrix 1.5s infinite linear;
+        }
+
+        @keyframes matrix {
+            from {
+                top: -100%;
+            }
+            to {
+                top: 100%;
+            }
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            width: 300px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .container.show {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .container.hide {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .container input {
+            background: #000;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .container input:focus {
+            border-color: #fff;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        .container button {
+            background: #fff;
+            border: none;
+            color: #000;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .container button:hover {
+            background: rgba(255, 255, 255, 0.8);
+            color: #000;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        .data-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: -1;
+            opacity: 0.5;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .error-popup, .success-popup {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            color: #000;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            display: none;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .error-popup {
+            background: rgba(255, 0, 0, 0.8);
+        }
+
+        .success-popup {
+            background: rgba(0, 255, 0, 0.8);
+        }
+
+        .main-container {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            width: 300px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .main-container.show {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .main-container.hide {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        .main-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .main-container p {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .main-container .animation {
+            font-size: 14px;
+            color: #fff;
+            animation: textAnimation 2s infinite, blinkCursor 1s step-end infinite;
+        }
+
+        @keyframes textAnimation {
+            0% { opacity: 0; transform: translateY(-10px); }
+            50% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(10px); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { border-right: 2px solid #fff; }
+            50% { border-right: 2px solid transparent; }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix">
+        <div style="left: 5%; animation-duration: 1s;"></div>
+        <div style="left: 15%; animation-duration: 1.2s;"></div>
+        <div style="left: 25%; animation-duration: 1.4s;"></div>
+        <div style="left: 35%; animation-duration: 1.6s;"></div>
+        <div style="left: 45%; animation-duration: 1.8s;"></div>
+        <div style="left: 55%; animation-duration: 2s;"></div>
+        <div style="left: 65%; animation-duration: 1.9s;"></div>
+        <div style="left: 75%; animation-duration: 2.1s;"></div>
+        <div style="left: 85%; animation-duration: 1.7s;"></div>
+    </div>
+
+    <div class="container login-container" id="login-container">
+        <h1>Login</h1>
+        <input type="text" id="username" placeholder="Usuário">
+        <input type="password" id="password" placeholder="Senha">
+        <button onclick="login()">Entrar</button>
+        <div class="error-popup" id="error-popup">Login ou senha incorretos.</div>
+        <div class="success-popup" id="success-popup">Bem-vindo!</div>
+    </div>
+
+    <div class="container main-container" id="main-container">
+        <h1>Bem-vindo à Página Principal</h1>
+        <p class="animation">Você está conectado com sucesso!</p>
+        <button onclick="logout()">Sair</button>
+    </div>
+
+    <script>
+        let attemptCount = 0;
+        let lockoutTimeout;
+
+        function showPopup(type, message) {
+            const popup = document.getElementById(type + '-popup');
+            popup.textContent = message;
+            popup.style.display = 'block';
+            popup.style.opacity = 1;
+            setTimeout(() => popup.style.opacity = 0, 3000);
+            setTimeout(() => popup.style.display = 'none', 3500);
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (lockoutTimeout) {
+                showPopup('error', 'Você está bloqueado. Tente novamente mais tarde.');
+                return;
+            }
+
+            if (username === 'harry' && password === '0523') {
+                showPopup('success', 'Bem-vindo!');
+                document.getElementById('login-container').classList.add('hide');
+                setTimeout(() => {
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'block';
+                    document.getElementById('main-container').classList.add('show');
+                }, 500);
+            } else {
+                attemptCount++;
+                if (attemptCount >= 3) {
+                    attemptCount = 0;
+                    showPopup('error', 'Você foi bloqueado por 30 segundos.');
+                    document.querySelector('input').disabled = true;
+                    document.querySelector('button').disabled = true;
+                    lockoutTimeout = setTimeout(() => {
+                        document.querySelector('input').disabled = false;
+                        document.querySelector('button').disabled = false;
+                        lockoutTimeout = null;
+                    }, 30000);
+                } else {
+                    showPopup('error', 'Login ou senha incorretos.');
+                }
+            }
+        }
+
+        function logout() {
+            document.getElementById('main-container').classList.add('hide');
+            setTimeout(() => {
+                document.getElementById('main-container').style.display = 'none';
+                document.getElementById('login-container').style.display = 'block';
+                document.getElementById('login-container').classList.add('show');
+            }, 500);
+        }
+
+        // Inicializa com a tela de login visível
+        document.getElementById('login-container').classList.add('show');
+    </script>
+</body>
+</html>

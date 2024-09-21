@@ -1,0 +1,27 @@
+/* Exemplo de estilização básica */
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.redonda {
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+}
+
+.btn {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #218838;
+}
